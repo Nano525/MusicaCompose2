@@ -13,6 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import mx.edu.utez.musicacompose.R
+import mx.edu.utez.musicacompose.ui.components.text.Link
+import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
