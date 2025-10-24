@@ -11,11 +11,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
+import mx.edu.utez.musicacompose.viewmodel.RegisterViewModel
 
 
 @Composable
-fun PasswordField(viewModel: LoginViewModel, label: String = "Contraseña") {
+fun PasswordField(viewModel: RegisterViewModel, label: String = "Contraseña") {
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
