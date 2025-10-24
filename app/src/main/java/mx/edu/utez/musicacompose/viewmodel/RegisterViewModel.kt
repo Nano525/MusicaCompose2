@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 
 class RegisterViewModel : ViewModel() {
     var password = mutableStateOf("")
-    var email = mutableStateOf("")
+    var username = mutableStateOf("")
     var registerError = mutableStateOf("")
 
     fun register(onSuccess: () -> Unit){
-
+        // Solo para mostrar la interfaz, sin funcionalidad
     }
 
 }
