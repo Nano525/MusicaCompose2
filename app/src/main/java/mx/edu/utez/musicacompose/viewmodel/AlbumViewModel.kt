@@ -1,82 +1,111 @@
 package mx.edu.utez.musicacompose.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import mx.edu.utez.musicacompose.R
+import androidx.navigation.NavController
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import mx.edu.utez.musicacompose.data.model.Album
 import mx.edu.utez.musicacompose.data.model.Cancion
+import mx.edu.utez.musicacompose.R
 
-class AlbumViewModel : ViewModel() {
-    // Lista de álbumes
-    val albums = mutableStateOf(
-        listOf(
+
+class AlbumViewModel: ViewModel() {
+
+    val _Albums = MutableStateFlow<List<Album>>(emptyList())
+    val Albums: StateFlow<List<Album>> = _Albums
+    private val _selectedAlbum = MutableStateFlow<Album?>(null)
+    val selectedAlbum: StateFlow<Album?> = _selectedAlbum
+
+    init {
+        _Albums.value = listOf(
             Album(
                 id = 1,
                 nombre = "Appetite for Destruction",
                 artista = "Guns N' Roses",
+                canciones = listOf(
+                    Cancion(1, "Welcome to the Jungle", "Guns N' Roses", "4:31", "Hard Rock"),
+                    Cancion(2, "It's So Easy", "Guns N' Roses", "3:22", "Hard Rock"),
+                    Cancion(3, "Nightrain", "Guns N' Roses", "4:28", "Hard Rock")
+                ),
                 imagen = R.drawable.albumappetite
             ),
             Album(
                 id = 2,
-                nombre = "Nevermind",
-                artista = "Nirvana",
+                nombre = "Back in Black",
+                artista = "AC/DC",
+                canciones = listOf(
+                    Cancion(4, "Hells Bells", "AC/DC", "5:12", "Hard Rock"),
+                    Cancion(5, "Shoot to Thrill", "AC/DC", "5:17", "Hard Rock"),
+                    Cancion(6, "Back in Black", "AC/DC", "4:15", "Hard Rock")
+                ),
                 imagen = R.drawable.albumnevermind
             ),
             Album(
                 id = 3,
-                nombre = "Disconnected",
-                artista = "Fates Warning",
+                nombre = "The Dark Side of the Moon",
+                artista = "Pink Floyd",
+                canciones = listOf(
+                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
+                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
+                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
+                ),
                 imagen = R.drawable.albumdisconected
+            ),
+            Album(
+                id = 4,
+                nombre = "Get Jinxed",
+                artista = "League of leguens",
+                canciones = listOf(
+                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
+                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
+                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
+                ),
+                imagen = R.drawable.sticerkj3
+            ),
+            Album(
+                id = 5,
+                nombre = "Bratva",
+                artista = "Vladimir",
+                canciones = listOf(
+                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
+                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
+                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
+                ),
+                imagen = R.drawable.dabi_de_my_hero_academia_10240x5760_xtrafondos_com
             )
         )
-    )
-    
-    // Álbum seleccionado
-    val selectedAlbum = mutableStateOf<Album?>(null)
-    
-    // Lista de canciones del álbum seleccionado
-    val albumSongs = mutableStateOf<List<Cancion>>(emptyList())
-    
-    // Estado de carga
-    val isLoading = mutableStateOf(false)
-    
-    // Error
-    val error = mutableStateOf("")
-    
-    fun selectAlbum(album: Album) {
-        selectedAlbum.value = album
-        loadAlbumSongs(album.id)
     }
-    
-    private fun loadAlbumSongs(albumId: Int) {
-        isLoading.value = true
-        error.value = ""
-        
-        // Simulamos carga de canciones basado en el álbum
-        albumSongs.value = when (albumId) {
-            1 -> listOf(
-                Cancion(1, "Welcome to the Jungle", "Guns N' Roses", "4:33", "Hard Rock", R.drawable.albumappetite),
-                Cancion(2, "Sweet Child O' Mine", "Guns N' Roses", "5:56", "Hard Rock", R.drawable.albumappetite),
-                Cancion(3, "Paradise City", "Guns N' Roses", "6:46", "Hard Rock", R.drawable.albumappetite)
-            )
-            2 -> listOf(
-                Cancion(4, "Smells Like Teen Spirit", "Nirvana", "5:01", "Grunge", R.drawable.albumnevermind),
-                Cancion(5, "Come as You Are", "Nirvana", "3:38", "Grunge", R.drawable.albumnevermind),
-                Cancion(6, "Lithium", "Nirvana", "4:16", "Grunge", R.drawable.albumnevermind)
-            )
-            3 -> listOf(
-                Cancion(7, "Disconnected", "Fates Warning", "5:20", "Progressive Metal", R.drawable.albumdisconected),
-                Cancion(8, "Still Remains", "Fates Warning", "4:23", "Progressive Metal", R.drawable.albumdisconected),
-                Cancion(9, "A Pleasant Shade of Gray", "Fates Warning", "6:15", "Progressive Metal", R.drawable.albumdisconected)
-            )
-            else -> emptyList()
+    fun clickAlbum(Album: Album){
+        println("Has hecho click en: ${Album.nombre}")
+        _selectedAlbum.value = Album
+    }
+
+    fun agregar(navController: NavController) {
+        navController.navigate("agregar") {
+            popUpTo("agregar") { inclusive = true }
         }
-        
-        isLoading.value = false
     }
-    
-    fun clearSelection() {
-        selectedAlbum.value = null
-        albumSongs.value = emptyList()
+
+    fun editar(navController: NavController) {
+        navController.navigate("editar") {
+            popUpTo("editar") { inclusive = true }
+        }
+    }
+    fun eliminar(navController: NavController) {
+        navController.navigate("home") {
+            popUpTo("home") { inclusive = true }
+        }
+    }
+
+    fun agregarSalir(navController: NavController) {
+        navController.navigate("home") {
+            popUpTo("home") { inclusive = true }
+        }
+    }
+
+    fun editarSalir(navController: NavController) {
+        navController.navigate("cancion") {
+            popUpTo("cancion") { inclusive = true }
+        }
     }
 }

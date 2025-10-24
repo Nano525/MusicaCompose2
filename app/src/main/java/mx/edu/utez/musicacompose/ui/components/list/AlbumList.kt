@@ -11,7 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import mx.edu.utez.musicacompose.R
 import mx.edu.utez.musicacompose.data.model.Album
-import mx.edu.utez.musicacompose.ui.theme.musicacomposeTheme
+import mx.edu.utez.musicacompose.ui.cards.AlbumCard
+import mx.edu.utez.musicacompose.ui.theme.MusicaComposeTheme
 
 @Composable
 fun AlbumList(lista: List<Album>, x: (Album) -> Unit) {
@@ -19,7 +20,6 @@ fun AlbumList(lista: List<Album>, x: (Album) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         //Iterar la lista en Java es con foreach
-        //Pero en kotlin vamos a ocupar una funcion items
         items(items = lista, key = {it.id} ) {Album ->
             AlbumCard(Album) { x(Album) }
             Spacer(modifier = Modifier.height(60.dp))

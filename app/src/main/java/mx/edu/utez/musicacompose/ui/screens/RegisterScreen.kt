@@ -12,10 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import mx.edu.utez.musicacompose.R
 import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
 import mx.edu.utez.musicacompose.ui.components.image.CircularImage
@@ -23,12 +21,11 @@ import mx.edu.utez.musicacompose.ui.components.inputs.PasswordField
 import mx.edu.utez.musicacompose.ui.components.inputs.UserInputField
 import mx.edu.utez.musicacompose.ui.components.text.Link
 import mx.edu.utez.musicacompose.ui.components.text.Title
-import mx.edu.utez.musicacompose.ui.theme.MusicaComposeTheme
-import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
+import mx.edu.utez.musicacompose.viewmodel.RegisterViewModel
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
-    Column(
+fun RegisterScreen(viewModel: RegisterViewModel, navController: NavController){
+    Column (
         modifier = Modifier
             .fillMaxSize()
             .fillMaxWidth()
@@ -36,13 +33,13 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
             .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)
-    ) {
+    ){
         CircularImage(R.drawable.logoapp)
-        Title("Aplicación\nMóvil")
+        Title("Aplicacion\nMovil")
 
         UserInputField(
             value = viewModel.username,
-            label = "Usuario"
+            label = "Correo electronico"
         )
 
         PasswordField(
@@ -50,40 +47,22 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
             label = "Contraseña"
         )
 
-        if (viewModel.loginError.value.isNotEmpty()) {
+        if(viewModel.registerError.value.isNotEmpty()){
             Text(
-                text = viewModel.loginError.value,
+                text = viewModel.registerError.value,
                 color = Color.Red,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-
         Link("¿Has olvidado la contraseña?") {
             navController.navigate("forgot_password")
         }
-
-        PrimaryButton("Iniciar sesión") {
-            viewModel.login(navController)
+        PrimaryButton("Registrarse") {
+            viewModel.register {
+                navController.navigate("home") {
+                    popUpTo("login") { inclusive = true }
+                }
+            }
         }
-
-        Link("¿No tienes cuenta? Regístrate") {
-            navController.navigate("register")
-        }
-
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginScreen() {
-    MusicaComposeTheme {
-        val navController = rememberNavController()
-        val viewModel = LoginViewModel()
-
-        LoginScreen(
-            viewModel = viewModel,
-            navController = navController
-        )
-    }
-}
-

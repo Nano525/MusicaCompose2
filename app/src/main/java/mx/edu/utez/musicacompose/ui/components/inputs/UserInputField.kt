@@ -6,23 +6,23 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
 
 
 @Composable
 fun UserInputField(
-    viewModel: LoginViewModel,
+    value: MutableState<String>,
     label: String = "Usuario",
     onNext: (() -> Unit)? = null
 ) {
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        value = viewModel.username.value,
-        onValueChange = { viewModel.username.value = it },
+        value = value.value,
+        onValueChange = { value.value = it },
         label = { Text(label) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,

@@ -2,44 +2,51 @@ package mx.edu.utez.musicacompose.ui
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import mx.edu.utez.musicacompose.ui.screens.AlbumScreen
+import mx.edu.utez.musicacompose.ui.screens.CancionScreen
+import mx.edu.utez.musicacompose.ui.screens.ForgotPasswordScreen
 import mx.edu.utez.musicacompose.ui.screens.HomeScreen
 import mx.edu.utez.musicacompose.ui.screens.LoginScreen
+import mx.edu.utez.musicacompose.ui.screens.RegisterScreen
 import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
 import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
+import mx.edu.utez.musicacompose.viewmodel.RegisterViewModel
+import mx.edu.utez.musicacompose.ui.screens.AgregarScreen
+import mx.edu.utez.musicacompose.ui.screens.EditScreen
+
+
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
     
     val loginViewModel: LoginViewModel = viewModel()
+    val registerViewModel: RegisterViewModel = viewModel()
     val albumViewModel: AlbumViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(loginViewModel, navController)
         }
-        
-        composable("home") {
-            HomeScreen(albumViewModel, navController)
+        composable("forgot_password") {
+            ForgotPasswordScreen(navController = navController)
         }
-        
-        composable(
-            "album_detail/{albumId}",
-            arguments = listOf(navArgument("albumId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val albumId = backStackEntry.arguments?.getInt("albumId") ?: 0
-            // Buscar el álbum por ID y seleccionarlo
-            val album = albumViewModel.albums.value.find { it.id == albumId }
-            if (album != null) {
-                albumViewModel.selectAlbum(album)
-            }
-            AlbumScreen(albumViewModel, navController)
+        composable("register") {
+            RegisterScreen(viewModel = registerViewModel, navController = navController)
+        }
+        composable("home") {
+            HomeScreen(viewModel = albumViewModel, navController = navController)
+        }
+        composable("cancion") {
+            CancionScreen(viewModel = albumViewModel, navController = navController)
+        }
+        composable("agregar") {
+            AgregarScreen(viewModel = albumViewModel, navController = navController)
+        }
+        composable("editar") {
+            EditScreen(viewModel =  albumViewModel, navController = navController)
         }
     }
 }
