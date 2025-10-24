@@ -9,6 +9,7 @@ data class Album (
     val id: Int,
     val nombre: String,
     val artista: String,
+    val list: List<Cancion>,
     @DrawableRes val imagen: Int
 
     )
