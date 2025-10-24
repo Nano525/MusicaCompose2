@@ -17,6 +17,8 @@ import androidx.navigation.NavController
 import mx.edu.utez.musicacompose.R
 import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
 import mx.edu.utez.musicacompose.ui.components.image.CircularImage
+import mx.edu.utez.musicacompose.ui.components.inputs.PasswordField
+import mx.edu.utez.musicacompose.ui.components.inputs.UserInputField
 import mx.edu.utez.musicacompose.ui.components.text.Link
 import mx.edu.utez.musicacompose.ui.components.text.Title
 import mx.edu.utez.musicacompose.viewmodel.LoginViewModel

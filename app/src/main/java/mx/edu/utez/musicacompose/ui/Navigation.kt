@@ -20,6 +20,6 @@ fun Navigation() {
         composable("login") {
             LoginScreen(loginViewModel, navController)
         }
-       
+
     }
 }
