@@ -46,7 +46,7 @@ class AlbumViewModel: ViewModel() {
                 artista = "Pink Floyd",
                 canciones = listOf(
                     Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
-                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
+                    Cancion(8, "Breathe (In the Air)", "Pink Floyd", "2:43", "Progressive Rock"),
                     Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
                 ),
                 imagen = R.drawable.albumdisconected
@@ -54,11 +54,11 @@ class AlbumViewModel: ViewModel() {
             Album(
                 id = 4,
                 nombre = "Get Jinxed",
-                artista = "League of leguens",
+                artista = "League of Legends",
                 canciones = listOf(
-                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
-                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
-                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
+                    Cancion(10, "Get Jinxed", "Jinx", "3:22", "Pop Rock"),
+                    Cancion(11, "Legends Never Die", "Against The Current", "3:55", "Epic Rock"),
+                    Cancion(12, "Warriors", "Imagine Dragons", "2:50", "Alternative Rock")
                 ),
                 imagen = R.drawable.sticerkj3
             ),
@@ -67,9 +67,9 @@ class AlbumViewModel: ViewModel() {
                 nombre = "Bratva",
                 artista = "Vladimir",
                 canciones = listOf(
-                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
-                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
-                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
+                    Cancion(13, "Brotherhood", "Vladimir", "3:45", "Dark Trap"),
+                    Cancion(14, "Cold Streets", "Vladimir", "4:10", "Dark Trap"),
+                    Cancion(15, "No Mercy", "Vladimir", "3:58", "Dark Trap")
                 ),
                 imagen = R.drawable.dabi_de_my_hero_academia_10240x5760_xtrafondos_com
             )
