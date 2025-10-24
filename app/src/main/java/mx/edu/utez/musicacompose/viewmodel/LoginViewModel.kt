@@ -2,6 +2,7 @@ package mx.edu.utez.musicacompose.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 
 class LoginViewModel : ViewModel() {
     var password = mutableStateOf("")
