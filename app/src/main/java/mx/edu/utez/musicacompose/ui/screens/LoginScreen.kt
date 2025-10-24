@@ -38,12 +38,12 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
         Title("Aplicación\nMóvil")
 
         UserInputField(
-            viewModel = viewModel,
+            value = viewModel.username,
             label = "Usuario"
         )
 
         PasswordField(
-            viewModel = viewModel,
+            value = viewModel.password,
             label = "Contraseña"
         )
 

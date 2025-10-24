@@ -41,12 +41,12 @@ fun RegisterScreen(viewModel: RegisterViewModel, navController: NavController){
         Title("Aplicacion\nMovil")
 
         UserInputField(
-            viewModel = viewModel,
+            value = viewModel.username,
             label = "Correo electronico"
         )
 
         PasswordField(
-            viewModel = viewModel,
+            value = viewModel.password,
             label = "Contraseña"
         )
 
