@@ -6,10 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import mx.edu.utez.musicacompose.data.model.Album
+import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
 import mx.edu.utez.musicacompose.ui.components.text.Label
 import mx.edu.utez.musicacompose.ui.components.text.Title
 import mx.edu.utez.musicacompose.ui.components.list.AlbumList
 import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
+import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
+import mx.edu.utez.musicacompose.ui.Navigation
 
 @Composable
 fun HomeScreen(viewModel: AlbumViewModel, navController: NavController){
@@ -20,6 +23,8 @@ fun HomeScreen(viewModel: AlbumViewModel, navController: NavController){
             viewModel.clickAlbum(album)
             navController.navigate("cancion")
         }
-        Label("Fin de la lista")
+        PrimaryButton("Agregar album") {
+            viewModel.agregar(navController)
+        }
     }
 }

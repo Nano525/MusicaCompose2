@@ -1,6 +1,7 @@
 package mx.edu.utez.musicacompose.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import mx.edu.utez.musicacompose.data.model.Album
@@ -57,4 +58,9 @@ class AlbumViewModel: ViewModel() {
         _selectedAlbum.value = Album
     }
 
+    fun agregar(navController: NavController) {
+        navController.navigate("agregar") {
+            popUpTo("agregar") { inclusive = true }
+        }
+    }
 }

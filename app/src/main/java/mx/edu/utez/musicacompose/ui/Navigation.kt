@@ -39,5 +39,8 @@ fun Navigation() {
         composable("cancion") {
             CancionScreen(viewModel = albumViewModel, navController = navController)
         }
+        composable("agregar") {
+            AgregarScreen( navController = navController)
+        }
     }
 }
