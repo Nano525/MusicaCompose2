@@ -15,9 +15,9 @@ import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
 fun HomeScreen(viewModel: AlbumViewModel, navController: NavController){
     Column{
         Title("Album registradas")
-        val Album by viewModel.Album.collectAsStateWithLifecycle()
-        AlbumList(Album) { passport ->
-            viewModel.clickAlbum(passport)
+        val albums by viewModel.Albums.collectAsStateWithLifecycle()
+        AlbumList(albums) { album ->
+            viewModel.clickAlbum(album)
             navController.navigate("cancion")
         }
         Label("Fin de la lista")

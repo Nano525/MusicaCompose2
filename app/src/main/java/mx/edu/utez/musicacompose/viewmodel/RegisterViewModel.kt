@@ -10,7 +10,12 @@ class RegisterViewModel : ViewModel() {
     var registerError = mutableStateOf("")
 
     fun register(onSuccess: () -> Unit){
-        // Solo para mostrar la interfaz, sin funcionalidad
+        if (username.value.isNotEmpty() && password.value.isNotEmpty()) {
+            registerError.value = ""
+            onSuccess()
+        } else {
+            registerError.value = "Por favor completa todos los campos"
+        }
     }
 
 }

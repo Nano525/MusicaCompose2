@@ -57,7 +57,7 @@ fun CancionScreen(viewModel: AlbumViewModel, navController: NavController) {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar")
             }
-            Title("Cancions de ${Album?.nombre ?: "..."}")
+            Title("Canciones de ${Album?.nombre ?: "..."}")
         }
 
         if (Album != null) {
@@ -72,13 +72,13 @@ fun CancionScreen(viewModel: AlbumViewModel, navController: NavController) {
                 }
             } else {
                 Text(
-                    text = "Este pasaporte no tiene Canciones.",
+                    text = "Este álbum no tiene canciones.",
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         } else {
             Text(
-                text = "Error: No se seleccionó ningún album.",
+                text = "Error: No se seleccionó ningún álbum.",
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }

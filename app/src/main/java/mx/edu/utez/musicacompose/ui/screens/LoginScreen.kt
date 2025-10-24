@@ -60,7 +60,7 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
         }
 
         PrimaryButton("Iniciar sesión") {
-            navController.navigate("passport")
+            viewModel.login(navController)
         }
 
         Link("¿No tienes cuenta? Regístrate") {

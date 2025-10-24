@@ -8,11 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
@@ -22,6 +25,7 @@ import mx.edu.utez.musicacompose.ui.theme.MusicaComposeTheme
 
 @Composable
 fun ForgotPasswordScreen(navController: NavController) {
+    val email = remember { mutableStateOf("")}
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -34,8 +38,8 @@ fun ForgotPasswordScreen(navController: NavController) {
         Text("para volver a tu cuenta")
         Spacer(modifier = Modifier.height(4.dp))
         NumberInputField(
-            viewModel = viewModel,
-            label = "Correo electrónico"
+            "correo electrónico",
+            email
         )
         Spacer(modifier = Modifier.height(16.dp))
         PrimaryButton("Enviar") {
@@ -44,13 +48,7 @@ fun ForgotPasswordScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground=true)
-@Composable
-fun previewForgotPassword(){
-    MusicaComposeTheme {
-        ForgotPasswordScreen()
-    }
-}
+
 
 
 

@@ -12,8 +12,8 @@ class LoginViewModel : ViewModel() {
     fun login(navController: NavController) {
         if (username.value == "admin" && password.value == "123") {
             loginError.value = ""
-            navController.navigate("musica") {
-                popUpTo("musica") { inclusive = true }
+            navController.navigate("home") {
+                popUpTo("login") { inclusive = true }
             }
         } else {
             loginError.value = "Algo esta mal en el inicio de sesión"
