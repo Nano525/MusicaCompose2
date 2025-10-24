@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
+import mx.edu.utez.musicacompose.viewmodel.RegisterViewModel
 
 
 @Composable
 fun UserInputField(
-    viewModel: LoginViewModel,
+    viewModel: RegisterViewModel,
     label: String = "Usuario",
     onNext: (() -> Unit)? = null
 ) {
