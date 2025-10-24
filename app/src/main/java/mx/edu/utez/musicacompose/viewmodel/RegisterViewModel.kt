@@ -3,6 +3,7 @@ package mx.edu.utez.musicacompose.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 
 class RegisterViewModel : ViewModel() {
     var password = mutableStateOf("")
@@ -17,5 +18,7 @@ class RegisterViewModel : ViewModel() {
             registerError.value = "Por favor completa todos los campos"
         }
     }
+
+
 
 }

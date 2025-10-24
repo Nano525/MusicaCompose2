@@ -86,6 +86,10 @@ fun CancionScreen(viewModel: AlbumViewModel, navController: NavController) {
         PrimaryButton("Editar album") {
             viewModel.editar(navController)
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        PrimaryButton("Eliminar album") {
+            viewModel.eliminar(navController)
+        }
     }
 }
 

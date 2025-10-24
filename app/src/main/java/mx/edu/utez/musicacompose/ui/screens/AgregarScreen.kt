@@ -1,31 +1,31 @@
 package mx.edu.utez.musicacompose.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import mx.edu.utez.musicacompose.R
 import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
 import mx.edu.utez.musicacompose.ui.components.image.CircularImage
-import mx.edu.utez.musicacompose.ui.components.inputs.PasswordField
+import mx.edu.utez.musicacompose.ui.components.inputs.NumberInputField
 import mx.edu.utez.musicacompose.ui.components.inputs.UserInputField
-import mx.edu.utez.musicacompose.ui.components.text.Link
 import mx.edu.utez.musicacompose.ui.components.text.Title
-import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
+import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
-    Column(
+fun AgregarScreen(viewModel: AlbumViewModel, navController: NavController){
+    var texto = mutableStateOf("")
+    Column (
         modifier = Modifier
             .fillMaxSize()
             .fillMaxWidth()
@@ -33,40 +33,27 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
             .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)
-    ) {
+    ){
         CircularImage(R.drawable.logoapp)
-        Title("Aplicación\nMóvil")
+        Title("Agregar album")
 
-        UserInputField(
-            value = viewModel.username,
-            label = "Usuario"
+        NumberInputField(
+            "Nombre"
+            ,texto
         )
-
-        PasswordField(
-            value = viewModel.password,
-            label = "Contraseña"
+        NumberInputField(
+            "Artista",
+            texto
         )
-
-        if (viewModel.loginError.value.isNotEmpty()) {
-            Text(
-                text = viewModel.loginError.value,
-                color = Color.Red,
-                style = MaterialTheme.typography.bodyMedium
-            )
+        NumberInputField(
+            "Cancion",
+            texto
+        )
+        PrimaryButton("Agregar") {
+            viewModel.agregarSalir(navController)
         }
 
-        Link("¿Has olvidado la contraseña?") {
-            navController.navigate("forgot_password")
-        }
 
-        PrimaryButton("Iniciar sesión") {
-            viewModel.login(navController)
-        }
-
-        Link("¿No tienes cuenta? Regístrate") {
-            navController.navigate("register")
-        }
 
     }
 }
-

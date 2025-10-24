@@ -38,7 +38,7 @@ class AlbumViewModel: ViewModel() {
                     Cancion(5, "Shoot to Thrill", "AC/DC", "5:17", "Hard Rock"),
                     Cancion(6, "Back in Black", "AC/DC", "4:15", "Hard Rock")
                 ),
-                imagen = R.drawable.albumappetite
+                imagen = R.drawable.albumnevermind
             ),
             Album(
                 id = 3,
@@ -49,7 +49,29 @@ class AlbumViewModel: ViewModel() {
                     Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
                     Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
                 ),
-                imagen = R.drawable.albumappetite
+                imagen = R.drawable.albumdisconected
+            ),
+            Album(
+                id = 4,
+                nombre = "Get Jinxed",
+                artista = "League of leguens",
+                canciones = listOf(
+                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
+                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
+                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
+                ),
+                imagen = R.drawable.sticerkj3
+            ),
+            Album(
+                id = 5,
+                nombre = "Bratva",
+                artista = "Vladimir",
+                canciones = listOf(
+                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
+                    Cancion(8, "Breathe", "Pink Floyd", "2:43", "Progressive Rock"),
+                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
+                ),
+                imagen = R.drawable.dabi_de_my_hero_academia_10240x5760_xtrafondos_com
             )
         )
     }
@@ -67,6 +89,23 @@ class AlbumViewModel: ViewModel() {
     fun editar(navController: NavController) {
         navController.navigate("editar") {
             popUpTo("editar") { inclusive = true }
+        }
+    }
+    fun eliminar(navController: NavController) {
+        navController.navigate("home") {
+            popUpTo("home") { inclusive = true }
+        }
+    }
+
+    fun agregarSalir(navController: NavController) {
+        navController.navigate("home") {
+            popUpTo("home") { inclusive = true }
+        }
+    }
+
+    fun editarSalir(navController: NavController) {
+        navController.navigate("cancion") {
+            popUpTo("cancion") { inclusive = true }
         }
     }
 }

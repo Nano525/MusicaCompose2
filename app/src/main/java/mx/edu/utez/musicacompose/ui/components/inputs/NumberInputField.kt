@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 
@@ -12,7 +13,7 @@ import androidx.compose.ui.text.input.KeyboardType
 @Composable
 fun NumberInputField(
     label: String,
-    state: androidx.compose.runtime.MutableState<String>
+    state: MutableState<String>
 ) {
     OutlinedTextField(
         value = state.value,

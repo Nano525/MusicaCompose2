@@ -13,6 +13,9 @@ import mx.edu.utez.musicacompose.ui.screens.RegisterScreen
 import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
 import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
 import mx.edu.utez.musicacompose.viewmodel.RegisterViewModel
+import mx.edu.utez.musicacompose.ui.screens.AgregarScreen
+import mx.edu.utez.musicacompose.ui.screens.EditScreen
+
 
 
 @Composable
@@ -40,10 +43,10 @@ fun Navigation() {
             CancionScreen(viewModel = albumViewModel, navController = navController)
         }
         composable("agregar") {
-            AgregarScreen( navController = navController)
+            AgregarScreen(viewModel = albumViewModel, navController = navController)
         }
         composable("editar") {
-            EditScreen( navController = navController)
+            EditScreen(viewModel =  albumViewModel, navController = navController)
         }
     }
 }
