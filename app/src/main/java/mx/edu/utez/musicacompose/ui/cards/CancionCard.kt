@@ -28,34 +28,34 @@ fun CancionCard(Cancion: Cancion) {
     ) {
         Column {
             Row(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = Cancion.nombre,
-                    fontSize = 20.sp,
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = Cancion.artista,
-                    fontSize = 20.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
             Row(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = Cancion.duracion,
-                    fontSize = 20.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = Cancion.genero,
-                    fontSize = 20.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
