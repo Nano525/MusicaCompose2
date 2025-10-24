@@ -38,7 +38,7 @@ class AlbumViewModel: ViewModel() {
                     Cancion(5, "Shoot to Thrill", "AC/DC", "5:17", "Hard Rock"),
                     Cancion(6, "Back in Black", "AC/DC", "4:15", "Hard Rock")
                 ),
-                imagen = R.drawable.albumnevermind
+                imagen = R.drawable.ac
             ),
             Album(
                 id = 3,
@@ -49,7 +49,7 @@ class AlbumViewModel: ViewModel() {
                     Cancion(8, "Breathe (In the Air)", "Pink Floyd", "2:43", "Progressive Rock"),
                     Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
                 ),
-                imagen = R.drawable.albumdisconected
+                imagen = R.drawable.triagulo
             ),
             Album(
                 id = 4,
@@ -60,7 +60,7 @@ class AlbumViewModel: ViewModel() {
                     Cancion(11, "Legends Never Die", "Against The Current", "3:55", "Epic Rock"),
                     Cancion(12, "Warriors", "Imagine Dragons", "2:50", "Alternative Rock")
                 ),
-                imagen = R.drawable.sticerkj3
+                imagen = R.drawable.loca
             ),
             Album(
                 id = 5,
@@ -71,7 +71,7 @@ class AlbumViewModel: ViewModel() {
                     Cancion(14, "Cold Streets", "Vladimir", "4:10", "Dark Trap"),
                     Cancion(15, "No Mercy", "Vladimir", "3:58", "Dark Trap")
                 ),
-                imagen = R.drawable.dabi_de_my_hero_academia_10240x5760_xtrafondos_com
+                imagen = R.drawable.loco
             )
         )
     }
