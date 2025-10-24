@@ -1,6 +1,5 @@
 package mx.edu.utez.musicacompose.data.model
 
-import androidx.annotation.DrawableRes
 
 data class Cancion(
     val id: Int,
@@ -8,6 +7,5 @@ data class Cancion(
     val artista: String,
     val duracion: String,
     val genero: String,
-    @DrawableRes val imagen: Int
 
 )

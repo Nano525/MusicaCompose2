@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import mx.edu.utez.musicacompose.ui.screens.ForgotPasswordScreen
 import mx.edu.utez.musicacompose.ui.screens.LoginScreen
 import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
 
@@ -20,6 +21,8 @@ fun Navigation() {
         composable("login") {
             LoginScreen(loginViewModel, navController)
         }
+        composable("forgotPassword") { ForgotPasswordScreen(navController) }
+        
 
     }
 }
