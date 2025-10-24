@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import mx.edu.utez.musicacompose.R
 import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
 import mx.edu.utez.musicacompose.ui.components.image.CircularImage
@@ -21,6 +23,7 @@ import mx.edu.utez.musicacompose.ui.components.inputs.PasswordField
 import mx.edu.utez.musicacompose.ui.components.inputs.UserInputField
 import mx.edu.utez.musicacompose.ui.components.text.Link
 import mx.edu.utez.musicacompose.ui.components.text.Title
+import mx.edu.utez.musicacompose.ui.theme.MusicaComposeTheme
 import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
 
 @Composable
@@ -60,13 +63,27 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
         }
 
         PrimaryButton("Iniciar sesión") {
-            navController.navigate("passport")
+            viewModel.login(navController)
         }
 
         Link("¿No tienes cuenta? Regístrate") {
             navController.navigate("register")
         }
 
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewLoginScreen() {
+    MusicaComposeTheme {
+        val navController = rememberNavController()
+        val viewModel = LoginViewModel()
+
+        LoginScreen(
+            viewModel = viewModel,
+            navController = navController
+        )
     }
 }
 
