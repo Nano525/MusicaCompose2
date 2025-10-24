@@ -63,4 +63,10 @@ class AlbumViewModel: ViewModel() {
             popUpTo("agregar") { inclusive = true }
         }
     }
+
+    fun editar(navController: NavController) {
+        navController.navigate("editar") {
+            popUpTo("editar") { inclusive = true }
+        }
+    }
 }

@@ -42,5 +42,8 @@ fun Navigation() {
         composable("agregar") {
             AgregarScreen( navController = navController)
         }
+        composable("editar") {
+            EditScreen( navController = navController)
+        }
     }
 }

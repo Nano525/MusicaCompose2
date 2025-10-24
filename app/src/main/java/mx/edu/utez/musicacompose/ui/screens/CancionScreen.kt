@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -37,8 +38,7 @@ import mx.edu.utez.musicacompose.data.model.Album
 import mx.edu.utez.musicacompose.ui.components.text.Title
 import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
 import mx.edu.utez.musicacompose.ui.cards.CancionCard
-
-
+import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
 
 
 @Composable
@@ -81,6 +81,10 @@ fun CancionScreen(viewModel: AlbumViewModel, navController: NavController) {
                 text = "Error: No se seleccionó ningún álbum.",
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        PrimaryButton("Editar album") {
+            viewModel.editar(navController)
         }
     }
 }
