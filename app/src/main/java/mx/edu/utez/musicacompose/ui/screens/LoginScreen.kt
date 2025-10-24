@@ -13,8 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import mx.edu.utez.musicacompose.R
+import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
+import mx.edu.utez.musicacompose.ui.components.image.CircularImage
 import mx.edu.utez.musicacompose.ui.components.text.Link
+import mx.edu.utez.musicacompose.ui.components.text.Title
 import mx.edu.utez.musicacompose.viewmodel.LoginViewModel
 
 @Composable
@@ -28,7 +32,7 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)
     ) {
-        CircularImage(R.drawable.utezlogo)
+        CircularImage(R.drawable.albumappetite)
         Title("Aplicación\nMóvil")
 
         UserInputField(
