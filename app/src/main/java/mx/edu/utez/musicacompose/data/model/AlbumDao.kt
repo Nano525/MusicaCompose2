@@ -1,21 +1,29 @@
 package mx.edu.utez.musicacompose.data.model
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AlbumDao {
 
+    // ========== ÁLBUMES ==========
+    
     // Inserta un nuevo álbum
     @Insert
     suspend fun insertAlbum(album: Album)
 
-    // Inserta una nueva canción
-    @Insert
-    suspend fun insertCancion(cancion: Cancion)
+    // Actualiza un álbum
+    @Update
+    suspend fun updateAlbum(album: Album)
+
+    // Elimina un álbum
+    @Query("DELETE FROM albums WHERE id = :albumId")
+    suspend fun deleteAlbum(albumId: Int)
 
     // Obtiene todos los álbumes con sus canciones (ordenados por nombre)
     @Transaction
@@ -26,4 +34,30 @@ interface AlbumDao {
     @Transaction
     @Query("SELECT * FROM albums WHERE id = :albumId")
     suspend fun getAlbumById(albumId: Int): AlbumConCanciones?
+
+    // Obtiene un álbum simple por ID (sin canciones)
+    @Query("SELECT * FROM albums WHERE id = :albumId")
+    suspend fun getAlbumByIdSimple(albumId: Int): Album?
+
+    // ========== CANCIONES ==========
+
+    // Inserta una nueva canción
+    @Insert
+    suspend fun insertCancion(cancion: Cancion)
+
+    // Actualiza una canción
+    @Update
+    suspend fun updateCancion(cancion: Cancion)
+
+    // Elimina una canción
+    @Query("DELETE FROM canciones WHERE id = :cancionId")
+    suspend fun deleteCancion(cancionId: Int)
+
+    // Obtiene todas las canciones de un álbum
+    @Query("SELECT * FROM canciones WHERE albumId = :albumId ORDER BY nombre ASC")
+    suspend fun getCancionesByAlbumId(albumId: Int): List<Cancion>
+
+    // Obtiene una canción por ID
+    @Query("SELECT * FROM canciones WHERE id = :cancionId")
+    suspend fun getCancionById(cancionId: Int): Cancion?
 }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import mx.edu.utez.musicacompose.R
-import mx.edu.utez.musicacompose.data.model.Album
+import mx.edu.utez.musicacompose.data.model.Cancion
 import mx.edu.utez.musicacompose.ui.components.buttons.PrimaryButton
 import mx.edu.utez.musicacompose.ui.components.image.CircularImage
 import mx.edu.utez.musicacompose.ui.components.inputs.UserInputField
@@ -23,19 +22,13 @@ import mx.edu.utez.musicacompose.ui.components.text.Title
 import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
 
 @Composable
-fun EditScreen(viewModel: AlbumViewModel, navController: NavController) {
+fun AgregarCancionScreen(viewModel: AlbumViewModel, navController: NavController) {
     val selectedAlbum by viewModel.selectedAlbum.collectAsStateWithLifecycle()
     
     val nombre = remember { mutableStateOf("") }
     val artista = remember { mutableStateOf("") }
-    
-    // Pre-llenar campos cuando se carga el álbum
-    LaunchedEffect(selectedAlbum) {
-        selectedAlbum?.let { albumConCanciones ->
-            nombre.value = albumConCanciones.album.nombre
-            artista.value = albumConCanciones.album.artista
-        }
-    }
+    val duracion = remember { mutableStateOf("") }
+    val genero = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -45,11 +38,11 @@ fun EditScreen(viewModel: AlbumViewModel, navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)
     ) {
         CircularImage(R.drawable.logoapp)
-        Title("Editar información")
+        Title("Agregar canción")
 
         UserInputField(
             value = nombre,
-            label = "Nombre del álbum"
+            label = "Nombre de la canción"
         )
 
         UserInputField(
@@ -57,19 +50,32 @@ fun EditScreen(viewModel: AlbumViewModel, navController: NavController) {
             label = "Artista"
         )
 
-        PrimaryButton("Editar") {
+        UserInputField(
+            value = duracion,
+            label = "Duración (ej: 4:31)"
+        )
+
+        UserInputField(
+            value = genero,
+            label = "Género"
+        )
+
+        PrimaryButton("Agregar") {
             selectedAlbum?.let { albumConCanciones ->
-                if (nombre.value.isNotBlank() && artista.value.isNotBlank()) {
-                    val albumActualizado = Album(
-                        id = albumConCanciones.album.id,
+                if (nombre.value.isNotBlank() && artista.value.isNotBlank() && 
+                    duracion.value.isNotBlank() && genero.value.isNotBlank()) {
+                    val nuevaCancion = Cancion(
                         nombre = nombre.value,
                         artista = artista.value,
-                        imagen = albumConCanciones.album.imagen // Mantener la imagen actual
+                        duracion = duracion.value,
+                        genero = genero.value,
+                        albumId = albumConCanciones.album.id
                     )
-                    viewModel.updateAlbum(albumActualizado)
-                    viewModel.editarSalir(navController)
+                    viewModel.insertCancion(nuevaCancion)
+                    viewModel.agregarCancionSalir(navController)
                 }
             }
         }
     }
 }
+

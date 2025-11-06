@@ -2,6 +2,7 @@ package mx.edu.utez.musicacompose.data.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -13,7 +14,8 @@ import androidx.room.PrimaryKey
             childColumns = ["albumId"],
             onDelete = ForeignKey.CASCADE // si se elimina un álbum, sus canciones también
         )
-    ]
+    ],
+    indices = [Index(value = ["albumId"])]
 )
 data class Cancion(
     @PrimaryKey(autoGenerate = true)

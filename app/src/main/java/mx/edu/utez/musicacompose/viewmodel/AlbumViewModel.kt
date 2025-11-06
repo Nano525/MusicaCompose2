@@ -1,112 +1,259 @@
 package mx.edu.utez.musicacompose.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import mx.edu.utez.musicacompose.data.model.Album
+import mx.edu.utez.musicacompose.data.model.AlbumConCanciones
 import mx.edu.utez.musicacompose.data.model.Cancion
 import mx.edu.utez.musicacompose.R
 import mx.edu.utez.musicacompose.data.repository.AlbumRepository
 
+class AlbumViewModel(private val albumRepository: AlbumRepository) : ViewModel() {
 
-class AlbumViewModel(private val albumRepository: AlbumRepository): ViewModel() {
+    private val _Albums = MutableStateFlow<List<AlbumConCanciones>>(emptyList())
+    val Albums: StateFlow<List<AlbumConCanciones>> = _Albums.asStateFlow()
 
-    val _Albums = MutableStateFlow<List<Album>>(emptyList())
-    val Albums: StateFlow<List<Album>> = _Albums
-    private val _selectedAlbum = MutableStateFlow<Album?>(null)
-    val selectedAlbum: StateFlow<Album?> = _selectedAlbum
+    private val _selectedAlbum = MutableStateFlow<AlbumConCanciones?>(null)
+    val selectedAlbum: StateFlow<AlbumConCanciones?> = _selectedAlbum.asStateFlow()
+
+    private val _selectedCancion = MutableStateFlow<Cancion?>(null)
+    val selectedCancion: StateFlow<Cancion?> = _selectedCancion.asStateFlow()
 
     init {
-        _Albums.value = listOf(
-            Album(
-                id = 1,
-                nombre = "Appetite for Destruction",
-                artista = "Guns N' Roses",
-                canciones = listOf(
-                    Cancion(1, "Welcome to the Jungle", "Guns N' Roses", "4:31", "Hard Rock"),
-                    Cancion(2, "It's So Easy", "Guns N' Roses", "3:22", "Hard Rock"),
-                    Cancion(3, "Nightrain", "Guns N' Roses", "4:28", "Hard Rock")
-                ),
-                imagen = R.drawable.albumappetite
-            ),
-            Album(
-                id = 2,
-                nombre = "Back in Black",
-                artista = "AC/DC",
-                canciones = listOf(
-                    Cancion(4, "Hells Bells", "AC/DC", "5:12", "Hard Rock"),
-                    Cancion(5, "Shoot to Thrill", "AC/DC", "5:17", "Hard Rock"),
-                    Cancion(6, "Back in Black", "AC/DC", "4:15", "Hard Rock")
-                ),
-                imagen = R.drawable.ac
-            ),
-            Album(
-                id = 3,
-                nombre = "The Dark Side of the Moon",
-                artista = "Pink Floyd",
-                canciones = listOf(
-                    Cancion(7, "Speak to Me", "Pink Floyd", "1:30", "Progressive Rock"),
-                    Cancion(8, "Breathe (In the Air)", "Pink Floyd", "2:43", "Progressive Rock"),
-                    Cancion(9, "Time", "Pink Floyd", "6:53", "Progressive Rock")
-                ),
-                imagen = R.drawable.triagulo
-            ),
-            Album(
-                id = 4,
-                nombre = "Get Jinxed",
-                artista = "League of Legends",
-                canciones = listOf(
-                    Cancion(10, "Get Jinxed", "Jinx", "3:22", "Pop Rock"),
-                    Cancion(11, "Legends Never Die", "Against The Current", "3:55", "Epic Rock"),
-                    Cancion(12, "Warriors", "Imagine Dragons", "2:50", "Alternative Rock")
-                ),
-                imagen = R.drawable.loca
-            ),
-            Album(
-                id = 5,
-                nombre = "Bratva",
-                artista = "Vladimir",
-                canciones = listOf(
-                    Cancion(13, "Brotherhood", "Vladimir", "3:45", "Dark Trap"),
-                    Cancion(14, "Cold Streets", "Vladimir", "4:10", "Dark Trap"),
-                    Cancion(15, "No Mercy", "Vladimir", "3:58", "Dark Trap")
-                ),
-                imagen = R.drawable.loco
-            )
-        )
-    }
-    fun clickAlbum(Album: Album){
-        println("Has hecho click en: ${Album.nombre}")
-        _selectedAlbum.value = Album
+        // Observar cambios en la base de datos
+        albumRepository.allAlbums
+            .onEach { albums ->
+                _Albums.value = albums
+                // Si no hay álbumes, inicializar con datos de ejemplo
+                if (albums.isEmpty()) {
+                    initializeDatabase()
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
-    fun agregar(navController: NavController) {
-        navController.navigate("agregar") {
-            popUpTo("agregar") { inclusive = true }
+    // ========== ÁLBUMES ==========
+
+    fun clickAlbum(album: AlbumConCanciones) {
+        _selectedAlbum.value = album
+    }
+
+    fun insertAlbum(album: Album) {
+        viewModelScope.launch {
+            albumRepository.insertAlbum(album)
         }
+    }
+
+    fun updateAlbum(album: Album) {
+        viewModelScope.launch {
+            albumRepository.updateAlbum(album)
+            // Recargar el álbum seleccionado
+            album.id.let { albumId ->
+                albumRepository.getAlbumById(albumId)?.let { updatedAlbum ->
+                    _selectedAlbum.value = updatedAlbum
+                }
+            }
+        }
+    }
+
+    fun deleteAlbum(albumId: Int) {
+        viewModelScope.launch {
+            albumRepository.deleteAlbum(albumId)
+            // Limpiar selección si se eliminó el álbum seleccionado
+            if (_selectedAlbum.value?.album?.id == albumId) {
+                _selectedAlbum.value = null
+            }
+        }
+    }
+
+    fun loadAlbumById(albumId: Int) {
+        viewModelScope.launch {
+            albumRepository.getAlbumById(albumId)?.let { album ->
+                _selectedAlbum.value = album
+            }
+        }
+    }
+
+    // ========== CANCIONES ==========
+
+    fun selectCancion(cancion: Cancion) {
+        _selectedCancion.value = cancion
+    }
+
+    fun insertCancion(cancion: Cancion) {
+        viewModelScope.launch {
+            albumRepository.insertCancion(cancion)
+            // Recargar el álbum seleccionado para actualizar la lista de canciones
+            _selectedAlbum.value?.album?.id?.let { albumId ->
+                albumRepository.getAlbumById(albumId)?.let { updatedAlbum ->
+                    _selectedAlbum.value = updatedAlbum
+                }
+            }
+        }
+    }
+
+    fun updateCancion(cancion: Cancion) {
+        viewModelScope.launch {
+            albumRepository.updateCancion(cancion)
+            // Recargar el álbum seleccionado para actualizar la lista de canciones
+            _selectedAlbum.value?.album?.id?.let { albumId ->
+                albumRepository.getAlbumById(albumId)?.let { updatedAlbum ->
+                    _selectedAlbum.value = updatedAlbum
+                }
+            }
+        }
+    }
+
+    fun deleteCancion(cancionId: Int) {
+        viewModelScope.launch {
+            albumRepository.deleteCancion(cancionId)
+            // Limpiar selección si se eliminó la canción seleccionada
+            if (_selectedCancion.value?.id == cancionId) {
+                _selectedCancion.value = null
+            }
+            // Recargar el álbum seleccionado para actualizar la lista de canciones
+            _selectedAlbum.value?.album?.id?.let { albumId ->
+                albumRepository.getAlbumById(albumId)?.let { updatedAlbum ->
+                    _selectedAlbum.value = updatedAlbum
+                }
+            }
+        }
+    }
+
+    // ========== NAVEGACIÓN ==========
+
+    fun agregar(navController: NavController) {
+        navController.navigate("agregar")
     }
 
     fun editar(navController: NavController) {
-        navController.navigate("editar") {
-            popUpTo("editar") { inclusive = true }
-        }
+        navController.navigate("editar")
     }
+
     fun eliminar(navController: NavController) {
         navController.navigate("home") {
-            popUpTo("home") { inclusive = true }
+            popUpTo("home") { inclusive = false }
         }
     }
 
     fun agregarSalir(navController: NavController) {
         navController.navigate("home") {
-            popUpTo("home") { inclusive = true }
+            popUpTo("agregar") { inclusive = true }
         }
     }
 
     fun editarSalir(navController: NavController) {
         navController.navigate("cancion") {
-            popUpTo("cancion") { inclusive = true }
+            popUpTo("editar") { inclusive = true }
+        }
+    }
+
+    fun agregarCancion(navController: NavController) {
+        navController.navigate("agregar_cancion")
+    }
+
+    fun editarCancion(navController: NavController) {
+        navController.navigate("editar_cancion")
+    }
+
+    fun agregarCancionSalir(navController: NavController) {
+        navController.navigate("cancion") {
+            popUpTo("agregar_cancion") { inclusive = true }
+        }
+    }
+
+    fun editarCancionSalir(navController: NavController) {
+        navController.navigate("cancion") {
+            popUpTo("editar_cancion") { inclusive = true }
+        }
+    }
+
+    // ========== INICIALIZACIÓN DE DATOS ==========
+
+    private fun initializeDatabase() {
+        viewModelScope.launch {
+            // Insertar álbumes
+            val album1 = Album(
+                nombre = "Appetite for Destruction",
+                artista = "Guns N' Roses",
+                imagen = R.drawable.albumappetite
+            )
+            val album2 = Album(
+                nombre = "Back in Black",
+                artista = "AC/DC",
+                imagen = R.drawable.ac
+            )
+            val album3 = Album(
+                nombre = "The Dark Side of the Moon",
+                artista = "Pink Floyd",
+                imagen = R.drawable.triagulo
+            )
+            val album4 = Album(
+                nombre = "Get Jinxed",
+                artista = "League of Legends",
+                imagen = R.drawable.loca
+            )
+            val album5 = Album(
+                nombre = "Bratva",
+                artista = "Vladimir",
+                imagen = R.drawable.loco
+            )
+
+            albumRepository.insertAlbum(album1)
+            albumRepository.insertAlbum(album2)
+            albumRepository.insertAlbum(album3)
+            albumRepository.insertAlbum(album4)
+            albumRepository.insertAlbum(album5)
+
+            // Esperar un momento para que se inserten los álbumes
+            kotlinx.coroutines.delay(200)
+
+            // Obtener los álbumes insertados
+            albumRepository.allAlbums.first().let { albumList ->
+                albumList.forEach { albumConCanciones ->
+                    val album = albumConCanciones.album
+                    val canciones = when (album.nombre) {
+                        "Appetite for Destruction" -> listOf(
+                            Cancion(nombre = "Welcome to the Jungle", artista = "Guns N' Roses", duracion = "4:31", genero = "Hard Rock", albumId = album.id),
+                            Cancion(nombre = "It's So Easy", artista = "Guns N' Roses", duracion = "3:22", genero = "Hard Rock", albumId = album.id),
+                            Cancion(nombre = "Nightrain", artista = "Guns N' Roses", duracion = "4:28", genero = "Hard Rock", albumId = album.id)
+                        )
+                        "Back in Black" -> listOf(
+                            Cancion(nombre = "Hells Bells", artista = "AC/DC", duracion = "5:12", genero = "Hard Rock", albumId = album.id),
+                            Cancion(nombre = "Shoot to Thrill", artista = "AC/DC", duracion = "5:17", genero = "Hard Rock", albumId = album.id),
+                            Cancion(nombre = "Back in Black", artista = "AC/DC", duracion = "4:15", genero = "Hard Rock", albumId = album.id)
+                        )
+                        "The Dark Side of the Moon" -> listOf(
+                            Cancion(nombre = "Speak to Me", artista = "Pink Floyd", duracion = "1:30", genero = "Progressive Rock", albumId = album.id),
+                            Cancion(nombre = "Breathe (In the Air)", artista = "Pink Floyd", duracion = "2:43", genero = "Progressive Rock", albumId = album.id),
+                            Cancion(nombre = "Time", artista = "Pink Floyd", duracion = "6:53", genero = "Progressive Rock", albumId = album.id)
+                        )
+                        "Get Jinxed" -> listOf(
+                            Cancion(nombre = "Get Jinxed", artista = "Jinx", duracion = "3:22", genero = "Pop Rock", albumId = album.id),
+                            Cancion(nombre = "Legends Never Die", artista = "Against The Current", duracion = "3:55", genero = "Epic Rock", albumId = album.id),
+                            Cancion(nombre = "Warriors", artista = "Imagine Dragons", duracion = "2:50", genero = "Alternative Rock", albumId = album.id)
+                        )
+                        "Bratva" -> listOf(
+                            Cancion(nombre = "Brotherhood", artista = "Vladimir", duracion = "3:45", genero = "Dark Trap", albumId = album.id),
+                            Cancion(nombre = "Cold Streets", artista = "Vladimir", duracion = "4:10", genero = "Dark Trap", albumId = album.id),
+                            Cancion(nombre = "No Mercy", artista = "Vladimir", duracion = "3:58", genero = "Dark Trap", albumId = album.id)
+                        )
+                        else -> emptyList()
+                    }
+
+                    canciones.forEach { cancion ->
+                        albumRepository.insertCancion(cancion)
+                    }
+                }
+            }
         }
     }
 }
