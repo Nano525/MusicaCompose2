@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 import mx.edu.utez.musicacompose.data.model.Album
 import mx.edu.utez.musicacompose.data.model.Cancion
 import mx.edu.utez.musicacompose.R
+import mx.edu.utez.musicacompose.data.repository.AlbumRepository
 
 
-class AlbumViewModel: ViewModel() {
+class AlbumViewModel(private val albumRepository: AlbumRepository): ViewModel() {
 
     val _Albums = MutableStateFlow<List<Album>>(emptyList())
     val Albums: StateFlow<List<Album>> = _Albums

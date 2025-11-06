@@ -1,16 +1,14 @@
 package mx.edu.utez.musicacompose.data.model
 
-
-
 import androidx.annotation.DrawableRes
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-
-data class Album (
-    val id: Int,
+@Entity(tableName = "albums")
+data class Album(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val nombre: String,
     val artista: String,
-    val canciones: List<Cancion>,
     @DrawableRes val imagen: Int
-
-    )
-
+)
