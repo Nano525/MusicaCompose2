@@ -1,12 +1,14 @@
 package mx.edu.utez.musicacompose.data.repository
 
 import kotlinx.coroutines.flow.Flow
+import mx.edu.utez.musicacompose.data.Api.ApiClient
 import mx.edu.utez.musicacompose.data.model.Album
 import mx.edu.utez.musicacompose.data.model.AlbumConCanciones
 import mx.edu.utez.musicacompose.data.model.AlbumDao
 import mx.edu.utez.musicacompose.data.model.Cancion
 
 class AlbumRepository(private val albumDao: AlbumDao) {
+    private val apiService = ApiClient.instance
 
     val allAlbums: Flow<List<AlbumConCanciones>> = albumDao.getAllAlbums()
 
