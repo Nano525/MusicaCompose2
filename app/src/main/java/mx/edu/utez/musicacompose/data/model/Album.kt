@@ -10,5 +10,6 @@ data class Album(
     val id: Int = 0,
     val nombre: String,
     val artista: String,
-    @DrawableRes val imagen: Int
+    @DrawableRes val imagen: Int = 0,
+    val imagenUrl: String? = null // URL de la imagen del servidor
 )

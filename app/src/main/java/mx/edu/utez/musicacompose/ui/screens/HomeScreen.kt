@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,9 +21,22 @@ import mx.edu.utez.musicacompose.viewmodel.AlbumViewModel
 fun HomeScreen(viewModel: AlbumViewModel, navController: NavController) {
     val albums by viewModel.Albums.collectAsStateWithLifecycle()
     
+    // Cargar álbumes desde la API al iniciar
+    LaunchedEffect(Unit) {
+        viewModel.loadAlbumsFromApi()
+    }
+    
     Column(modifier = Modifier.padding(16.dp)) {
         Title("Álbumes registrados")
         Spacer(modifier = Modifier.height(16.dp))
+        
+        // Botón para recargar desde servidor
+        PrimaryButton("Cargar desde servidor") {
+            viewModel.loadAlbumsFromApi()
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
         PrimaryButton("Agregar álbum") {
             viewModel.agregar(navController)
         }

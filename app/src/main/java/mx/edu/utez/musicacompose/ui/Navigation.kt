@@ -36,7 +36,7 @@ fun Navigation() {
     val application = context.applicationContext as Application
     val database = (application as? MusicaApplication)?.database 
         ?: AppDatabase.getInstance(application)
-    val repository = AlbumRepository(database.albumDao())
+    val repository = AlbumRepository(database.albumDao(), database)
     val albumViewModel: AlbumViewModel = viewModel(
         factory = AlbumViewModelFactory(repository)
     )

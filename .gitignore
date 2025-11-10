@@ -14,3 +14,16 @@
 .cxx
 local.properties
 .idea/
+/uploads
+
+# Carpetas de Python (Flask backend)
+**/__pycache__/
+**/instance/
+**/uploads/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.db
+*.sqlite
+*.sqlite3

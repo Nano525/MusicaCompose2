@@ -15,6 +15,7 @@ import mx.edu.utez.musicacompose.data.model.AlbumConCanciones
 import mx.edu.utez.musicacompose.data.model.Cancion
 import mx.edu.utez.musicacompose.R
 import mx.edu.utez.musicacompose.data.repository.AlbumRepository
+import java.io.File
 
 class AlbumViewModel(private val albumRepository: AlbumRepository) : ViewModel() {
 
@@ -78,6 +79,54 @@ class AlbumViewModel(private val albumRepository: AlbumRepository) : ViewModel()
         viewModelScope.launch {
             albumRepository.getAlbumById(albumId)?.let { album ->
                 _selectedAlbum.value = album
+            }
+        }
+    }
+
+    // ========== FUNCIONES DE API (READ) ==========
+
+    fun loadAlbumsFromApi() {
+        viewModelScope.launch {
+            try {
+                // Cargar desde la API primero (sin insertar en Room todavía)
+                val albumsFromApi = albumRepository.getAlbumsFromApi()
+                
+                // Solo actualizar si se cargaron datos exitosamente
+                if (albumsFromApi.isNotEmpty()) {
+                    // Preparar listas de álbumes y canciones para insertar
+                    val albumsToInsert = albumsFromApi.map { it.album.copy(id = 0) }
+                    val cancionesByAlbumIndex = albumsFromApi.mapIndexed { index, albumConCanciones ->
+                        index to albumConCanciones.canciones.map { it.copy(id = 0, albumId = 0) }
+                    }.toMap()
+                    
+                    // Limpiar y reinsertar todo en una transacción atómica
+                    albumRepository.replaceAllAlbums(albumsToInsert, cancionesByAlbumIndex)
+                }
+                // El Flow automáticamente actualizará _Albums cuando se inserten los datos
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // ========== FUNCIONES DE API (CREATE) ==========
+
+    fun createAlbumOnApi(
+        nombre: String,
+        artista: String,
+        imagenFile: File? = null
+    ) {
+        viewModelScope.launch {
+            try {
+                albumRepository.createAlbumOnApi(
+                    nombre = nombre,
+                    artista = artista,
+                    imagenFile = imagenFile
+                )
+                // Recargar álbumes desde la API para actualizar la lista
+                loadAlbumsFromApi()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

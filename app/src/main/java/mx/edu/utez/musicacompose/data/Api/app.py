@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from models import db, Album, Cancion
 import os
@@ -15,6 +15,15 @@ db.init_app(app)
 with app.app_context():
     if not os.path.exists('database.db'):
         db.create_all()
+    # Crear carpeta de uploads si no existe
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# ----------------------------
+# Servir imágenes estáticas
+# ----------------------------
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # ----------------------------
 # GET: Obtener todos los álbumes con sus canciones
@@ -25,12 +34,22 @@ def get_albums():
     data = []
     for album in albums:
         canciones = Cancion.query.filter_by(albumId=album.id).all()
+        # Construir URL completa de la imagen si existe
+        imagen_url = None
+        if album.imagen:
+            # Si ya es una URL completa, usarla directamente
+            if album.imagen.startswith('http'):
+                imagen_url = album.imagen
+            else:
+                # Construir URL relativa que se servirá desde /uploads/
+                imagen_url = f"/uploads/{os.path.basename(album.imagen)}"
+        
         data.append({
             'album': {
                 'id': album.id,
                 'nombre': album.nombre,
                 'artista': album.artista,
-                'imagen': album.imagen
+                'imagen': imagen_url or ''
             },
             'canciones': [
                 {
@@ -87,4 +106,7 @@ def create_album():
     return jsonify({'message': 'Álbum creado correctamente', 'id': nuevo_album.id}), 201
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # host='0.0.0.0' permite conexiones desde cualquier IP de la red
+    # port=5000 especifica el puerto
+    # debug=True activa el modo debug
+    app.run(host='0.0.0.0', port=5000, debug=True)

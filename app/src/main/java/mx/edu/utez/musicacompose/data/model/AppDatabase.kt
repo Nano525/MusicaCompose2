@@ -8,7 +8,7 @@ import mx.edu.utez.musicacompose.data.model.Album
 import mx.edu.utez.musicacompose.data.model.AlbumDao
 import mx.edu.utez.musicacompose.data.model.Cancion
 
-@Database(entities = [Album::class, Cancion::class], version = 1)
+@Database(entities = [Album::class, Cancion::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun albumDao(): AlbumDao
 
@@ -22,7 +22,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "musica_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Para desarrollo - elimina y recrea la BD si cambia la versión
+                    .build()
                 INSTANCE = instance
                 instance
             }

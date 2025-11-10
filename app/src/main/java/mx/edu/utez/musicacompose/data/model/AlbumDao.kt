@@ -13,9 +13,9 @@ interface AlbumDao {
 
     // ========== ÁLBUMES ==========
     
-    // Inserta un nuevo álbum
+    // Inserta un nuevo álbum y retorna el ID generado
     @Insert
-    suspend fun insertAlbum(album: Album)
+    suspend fun insertAlbum(album: Album): Long
 
     // Actualiza un álbum
     @Update
@@ -24,6 +24,18 @@ interface AlbumDao {
     // Elimina un álbum
     @Query("DELETE FROM albums WHERE id = :albumId")
     suspend fun deleteAlbum(albumId: Int)
+
+    // Elimina todos los álbumes (las canciones se eliminan automáticamente por CASCADE)
+    @Query("DELETE FROM albums")
+    suspend fun deleteAllAlbums()
+
+    // Inserta múltiples álbumes en una transacción
+    @Transaction
+    suspend fun replaceAllAlbums(albums: List<Album>, canciones: List<Cancion>) {
+        deleteAllAlbums()
+        albums.forEach { insertAlbum(it) }
+        canciones.forEach { insertCancion(it) }
+    }
 
     // Obtiene todos los álbumes con sus canciones (ordenados por nombre)
     @Transaction
