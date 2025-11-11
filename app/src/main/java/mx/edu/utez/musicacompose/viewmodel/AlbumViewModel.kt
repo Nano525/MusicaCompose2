@@ -33,9 +33,8 @@ class AlbumViewModel(private val albumRepository: AlbumRepository) : ViewModel()
         albumRepository.allAlbums
             .onEach { albums ->
                 _Albums.value = albums
-                // Si no hay álbumes, inicializar con datos de ejemplo
                 if (albums.isEmpty()) {
-                    initializeDatabase()
+                    //nada
                 }
             }
             .launchIn(viewModelScope)
@@ -225,84 +224,5 @@ class AlbumViewModel(private val albumRepository: AlbumRepository) : ViewModel()
         }
     }
 
-    // ========== INICIALIZACIÓN DE DATOS ==========
 
-    private fun initializeDatabase() {
-        viewModelScope.launch {
-            // Insertar álbumes
-            val album1 = Album(
-                nombre = "Appetite for Destruction",
-                artista = "Guns N' Roses",
-                imagen = R.drawable.albumappetite
-            )
-            val album2 = Album(
-                nombre = "Back in Black",
-                artista = "AC/DC",
-                imagen = R.drawable.ac
-            )
-            val album3 = Album(
-                nombre = "The Dark Side of the Moon",
-                artista = "Pink Floyd",
-                imagen = R.drawable.triagulo
-            )
-            val album4 = Album(
-                nombre = "Get Jinxed",
-                artista = "League of Legends",
-                imagen = R.drawable.loca
-            )
-            val album5 = Album(
-                nombre = "Bratva",
-                artista = "Vladimir",
-                imagen = R.drawable.loco
-            )
-
-            albumRepository.insertAlbum(album1)
-            albumRepository.insertAlbum(album2)
-            albumRepository.insertAlbum(album3)
-            albumRepository.insertAlbum(album4)
-            albumRepository.insertAlbum(album5)
-
-            // Esperar un momento para que se inserten los álbumes
-            kotlinx.coroutines.delay(200)
-
-            // Obtener los álbumes insertados
-            albumRepository.allAlbums.first().let { albumList ->
-                albumList.forEach { albumConCanciones ->
-                    val album = albumConCanciones.album
-                    val canciones = when (album.nombre) {
-                        "Appetite for Destruction" -> listOf(
-                            Cancion(nombre = "Welcome to the Jungle", artista = "Guns N' Roses", duracion = "4:31", genero = "Hard Rock", albumId = album.id),
-                            Cancion(nombre = "It's So Easy", artista = "Guns N' Roses", duracion = "3:22", genero = "Hard Rock", albumId = album.id),
-                            Cancion(nombre = "Nightrain", artista = "Guns N' Roses", duracion = "4:28", genero = "Hard Rock", albumId = album.id)
-                        )
-                        "Back in Black" -> listOf(
-                            Cancion(nombre = "Hells Bells", artista = "AC/DC", duracion = "5:12", genero = "Hard Rock", albumId = album.id),
-                            Cancion(nombre = "Shoot to Thrill", artista = "AC/DC", duracion = "5:17", genero = "Hard Rock", albumId = album.id),
-                            Cancion(nombre = "Back in Black", artista = "AC/DC", duracion = "4:15", genero = "Hard Rock", albumId = album.id)
-                        )
-                        "The Dark Side of the Moon" -> listOf(
-                            Cancion(nombre = "Speak to Me", artista = "Pink Floyd", duracion = "1:30", genero = "Progressive Rock", albumId = album.id),
-                            Cancion(nombre = "Breathe (In the Air)", artista = "Pink Floyd", duracion = "2:43", genero = "Progressive Rock", albumId = album.id),
-                            Cancion(nombre = "Time", artista = "Pink Floyd", duracion = "6:53", genero = "Progressive Rock", albumId = album.id)
-                        )
-                        "Get Jinxed" -> listOf(
-                            Cancion(nombre = "Get Jinxed", artista = "Jinx", duracion = "3:22", genero = "Pop Rock", albumId = album.id),
-                            Cancion(nombre = "Legends Never Die", artista = "Against The Current", duracion = "3:55", genero = "Epic Rock", albumId = album.id),
-                            Cancion(nombre = "Warriors", artista = "Imagine Dragons", duracion = "2:50", genero = "Alternative Rock", albumId = album.id)
-                        )
-                        "Bratva" -> listOf(
-                            Cancion(nombre = "Brotherhood", artista = "Vladimir", duracion = "3:45", genero = "Dark Trap", albumId = album.id),
-                            Cancion(nombre = "Cold Streets", artista = "Vladimir", duracion = "4:10", genero = "Dark Trap", albumId = album.id),
-                            Cancion(nombre = "No Mercy", artista = "Vladimir", duracion = "3:58", genero = "Dark Trap", albumId = album.id)
-                        )
-                        else -> emptyList()
-                    }
-
-                    canciones.forEach { cancion ->
-                        albumRepository.insertCancion(cancion)
-                    }
-                }
-            }
-        }
-    }
 }

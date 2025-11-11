@@ -108,7 +108,7 @@ class AlbumRepository(
                         } else {
                             // Construir URL completa desde la ruta relativa
                             // El servidor retorna /uploads/filename.jpg, necesitamos agregar el base URL
-                            val baseUrl = "http://192.168.0.123:5000"
+                            val baseUrl = "http://192.168.137.196:5000"
                             if (albumApiDto.album.imagen.startsWith("/")) {
                                 "$baseUrl${albumApiDto.album.imagen}"
                             } else {
